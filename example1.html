@@ -1,0 +1,54 @@
+<!-- // Attach a button listener to the button
+//
+// On click on the button, make an AJAX request to reddit for results of cute puppies
+//
+// http://www.reddit.com/r/aww/search.json?q=puppy&restrict_sr=true
+// https://www.reddit.com/dev/api
+// For each of the elements in data.children, append a new <img> element to .text with the src as the child.data.thumbnail -->
+
+<!-- https://learn.jquery.com/ajax/jquery-ajax-methods/ -->
+
+<!-- Below script is to allow for Live Reload to update your page automatically -->
+<!DOCTYPE html>
+<html>
+<body>
+
+<button type="button" class="btn">Click me!</button>
+<div class="text">Replace me!!</div>
+
+</body>
+</html>
+
+<script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
+
+<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		console.log("jQuery is loaded, document is ready");
+		$('button').click(function(){
+			// console.log('button clicked');
+			$.ajax(
+				{
+					url:"https://www.reddit.com/rz/aww/search.json?",
+					data: {
+						q:"puppy",
+						restrict_sr:true
+					},
+					success: function(json){
+						// console.log(json.data.children[0].data.thumbnail);
+						var posts = json.data.children;
+						posts.forEach(function(post){
+							// console.log(post.data.thumbnail);
+							var imageTag = "<img src="+post.data.thumbnail+">";
+							$('.text').append(imageTag);
+						});
+					},
+					error: function(){
+						console.log("Something went wrong");
+					}
+				}
+			)
+		})
+	})
+</script>

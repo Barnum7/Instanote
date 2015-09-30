@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<form id="image">
+    <input type="text" name="imageUrl" id="url"></input>
+    <input type="submit" value="Submit">
+</form>
+
+<button type="button" class="btn">Click me for a random giphy!</button>
+
+<div class="text">Replace me!!</div>
+
+</body>
+</html>
+
+<script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
+<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+
+<script>
+    $(document).ready(function(){
+        console.log('jQuery is working!');
+
+        $('button').click(function(e){
+           $('.text').text('Loading...');
+           // $.get('http://localhost:1234/api/image',function(response){
+           //      console.log(response.data);
+           //      var imagetag = "<img src="+response.data+">"
+           //      $('.text').append(imagetag);
+           // })
+            var promise = $.get('http://localhost:1234/api/image');
+            
+            console.log(promise);
+
+            promise.then(function(response){
+                console.log(response);
+            })
+        })
+
+        $("form").submit(function(event){
+            event.preventDefault(); //prevent default action
+            var imageUrl = $("#url").val();
+            console.log(imageUrl);
+            $.post('http://localhost:1234/api/image',{imageUrl:imageUrl},function(response){
+                // console.log(response);
+                $('.text').append(response.message);
+            })
+
+        })
+    });
+</script>
